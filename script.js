@@ -27,8 +27,16 @@ const age1 = calcFactAge(2015);
 console.log(age1);
 console.log(calcFactAge(2055));
 
-let votesInteresting = 19;
-let votesMindBlowing = 20;
+const calcFactAge2 = (year) =>
+  year <= new Date().getFullYear()
+    ? new Date().getFullYear() - year
+    : `Impossible year. Year needs to be less or equal ${new Date().getFullYear()}`;
+
+console.log(calcFactAge2(2016));
+console.log(calcFactAge2(2027));
+
+// let votesInteresting = 19;
+// let votesMindBlowing = 20;
 
 // if (votesInteresting === votesMindBlowing) {
 //   alert("This fact is equally interesting and mindblowing");
@@ -58,3 +66,15 @@ let votesMindBlowing = 20;
 //   totalUpvotes > votesFalse ? "correct" : "not true"
 // }`;
 // console.log(str);
+
+const fact = ["Lisbon is the capital of Portual", 2015, true];
+
+console.log(fact);
+console.log(fact[2]);
+console.log(fact.length);
+
+const [text, createdIn, isCorrect] = fact;
+console.log(createdIn);
+
+const newFact = [...fact, "society"];
+console.log(newFact);

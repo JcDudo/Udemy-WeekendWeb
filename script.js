@@ -73,8 +73,28 @@ console.log(fact);
 console.log(fact[2]);
 console.log(fact.length);
 
-const [text, createdIn, isCorrect] = fact;
+const [text, createdIn] = fact;
 console.log(createdIn);
 
+// Copy array to a new array
 const newFact = [...fact, "society"];
 console.log(newFact);
+
+const factObj = {
+  text: "Lisbon is the capital of Portual",
+  category: "society",
+  createdIn: 2015,
+  isCorrect: true,
+  createSummary: function () {
+    return `The fact ${
+      this.text
+    } is from the category ${this.category.toUpperCase()}`;
+  },
+};
+
+console.log(factObj.text);
+console.log(factObj["text"]);
+
+const { category, isCorrect } = factObj;
+console.log(category);
+console.log(factObj.createSummary());

@@ -1,4 +1,5 @@
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
+import supabase from "./supabase";
 import "./style.css";
 
 const initialFacts = [
@@ -66,6 +67,15 @@ function Counter() {
 function App() {
   //define state variable
   const [showForm, setShowForm] = useState(false);
+  const [facts, setFacts] = useState([]);
+
+  useEffect(function () {
+    async function getFacts() {
+      const { data: facts, error } = await supabase.from("facts").select("*");
+      setFacts(facts);
+    }
+    getFacts();
+  }, []);
 
   return (
     <>
@@ -73,10 +83,12 @@ function App() {
       <Header showForm={showForm} setShowForm={setShowForm} />
 
       {/* use state variable */}
-      {showForm ? <NewFactForm /> : null}
+      {showForm ? (
+        <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
+      ) : null}
       <main className="main">
         <CategoryFilter />
-        <FactList />
+        <FactList facts={facts} />
       </main>
     </>
   );
@@ -113,7 +125,7 @@ function isValidHttpUrl(string) {
   return url.protocol === "http:" || url.protocol === "https:";
 }
 
-function NewFactForm() {
+function NewFactForm({ setFacts, setShowForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("http://example.com");
   const [category, setCategory] = useState("");
@@ -137,14 +149,19 @@ function NewFactForm() {
         votesInteresting: 0,
         votesMindblowing: 0,
         votesFalse: 0,
-        createdIn: new Date().getCurrentYear(),
+        createdIn: new Date().getFullYear(),
       };
 
       // 4.add the fact to the UI: add the fact to state
+      setFacts((facts) => [newFact, ...facts]);
 
       //5.Reset the input field
+      setText("");
+      setSource("");
+      setCategory("");
 
       //6. Close the form
+      setShowForm(false);
     }
   }
 
@@ -197,9 +214,7 @@ function CategoryFilter() {
   );
 }
 
-function FactList() {
-  //temporary
-  const facts = initialFacts;
+function FactList({ facts, setFacts }) {
   return (
     <section>
       <ul className="facts-list">
